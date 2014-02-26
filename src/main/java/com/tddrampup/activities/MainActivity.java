@@ -42,6 +42,30 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
     private String[] mMenuTitles;
 
     private VolleyServiceLayer volleyServiceLayer;
+    private ListFragment mListFragment;
+    private GoogleMapFragment mGoogleMapFragment;
+
+    public ListFragment getListFragment() {
+        if (mListFragment == null ){
+            mListFragment = new ListFragment();
+        }
+        return mListFragment;
+    }
+
+    public void setListFragment(ListFragment mListFragment) {
+        this.mListFragment = mListFragment;
+    }
+
+    public GoogleMapFragment getGoogleMapFragment() {
+        if (mGoogleMapFragment == null){
+            mGoogleMapFragment = new GoogleMapFragment(new ArrayList<Listing>());
+        }
+        return mGoogleMapFragment;
+    }
+
+    public void setGoogleMapFragment(GoogleMapFragment mGoogleMapFragment) {
+        this.mGoogleMapFragment = mGoogleMapFragment;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +113,9 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
         if (savedInstanceState == null) {
             selectItem(0);
         }
+
     }
+
 
 
     @Override
@@ -114,7 +140,12 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
     private void selectItem(int position) {
 
         String item = getResources().getStringArray(R.array.menu_array)[position];
-        Fragment fragment = (position == 0)? new ListFragment(): new GoogleMapFragment(new ArrayList<Listing>());
+
+        Fragment fragment = getListFragment();
+        if (position == 0)
+            fragment = getListFragment();
+        if (position == 1)
+            fragment = getGoogleMapFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, fragment).commit();
