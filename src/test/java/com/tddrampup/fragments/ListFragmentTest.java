@@ -9,7 +9,6 @@ import android.widget.ListView;
 import com.tddrampup.R;
 import com.tddrampup.activities.MainActivity;
 import com.tddrampup.adapters.ListingAdapter;
-import com.tddrampup.models.Address;
 import com.tddrampup.models.Listing;
 
 import org.junit.Before;
@@ -34,11 +33,9 @@ public class ListFragmentTest {
 
     public void createFakeData() {
         Listing one = new Listing();
-        Address addOne = new Address();
-        addOne.setCity("Toronto");
-        addOne.setStreet("Street");
+        one.setCity("Toronto");
+        one.setStreet("Street");
         one.setName("One");
-        one.setAddress(addOne);
         mListings = new ArrayList<Listing>();
         mListings.add(one);
     }

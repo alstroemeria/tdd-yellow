@@ -64,15 +64,15 @@ public class GoogleMapFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.google_map);
-        if (fragment != null)
-            getFragmentManager().beginTransaction().remove(fragment).commit();
+        //Fragment fragment = getFragmentManager().findFragmentById(R.id.google_map);
+        //if (fragment != null)
+        //   getFragmentManager().beginTransaction().remove(fragment).commit();
     }
 
     public void addMarkers() {
         for(Listing tempListing : mListings) {
-            if (tempListing.getGeoCode() != null) {
-                LatLng coordinates = new LatLng(Double.parseDouble(tempListing.getGeoCode().getLatitude()), Double.parseDouble(tempListing.getGeoCode().getLongitude()));
+            if (tempListing.getGeoCodeLatitude()!=null ) {
+                LatLng coordinates = new LatLng(Double.parseDouble(tempListing.getGeoCodeLatitude().toString()), Double.parseDouble(tempListing.getGeoCodeLongitude().toString()));
                 map.addMarker(new MarkerOptions().position(coordinates).title(tempListing.getName()));
             }
         }

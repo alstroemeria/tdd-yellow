@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 
 import com.tddrampup.R;
-import com.tddrampup.models.Address;
 import com.tddrampup.models.Listing;
 
 import org.junit.Before;
@@ -25,11 +24,9 @@ public class MainActivityTest {
 
     public void createFakeData() {
         Listing one = new Listing();
-        Address addOne = new Address();
-        addOne.setCity("Toronto");
-        addOne.setStreet("Street");
+        one.setCity("Toronto");
+        one.setStreet("Street");
         one.setName("One");
-        one.setAddress(addOne);
         listings = new ArrayList<Listing>();
         listings.add(one);
     }
@@ -41,6 +38,8 @@ public class MainActivityTest {
         //createFakeData();
     }
 
+
+    @Ignore
     @Test
     public void onCreate_shouldDisplayHomeFragment() throws Exception {
         //Fragment homeFragment = activity.getSupportFragmentManager().findFragmentById(R.id.list_fragment);

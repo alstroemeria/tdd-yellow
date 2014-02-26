@@ -33,12 +33,7 @@ public class Listings {
 
     public void setListings(List<Listing> value){
         mListings = value;
-        for (Listing item: mListings){
-            if (item.getAddress().getCity()==null){
-                mListings.remove(item);
-            }
-        }
-    }
+           }
 
     public Listing getListing(String id){
         for (Listing item: mListings){

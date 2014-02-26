@@ -56,7 +56,7 @@ public class ListingAdapter extends BaseAdapter {
 
         Listing listing = mListings.get(i);
         viewHolder.listingTitle.setText(listing.getName());
-        viewHolder.listingAddress.setText(listing.getAddress().getStreet());
+        viewHolder.listingAddress.setText(listing.getStreet());
         //viewHolder.listingCity.setText(listing.getAddress().getCity());
         return view;
     }

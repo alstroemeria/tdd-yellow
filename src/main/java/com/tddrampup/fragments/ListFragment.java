@@ -54,7 +54,7 @@ public class ListFragment extends Fragment {
         if (Listings.getInstance().getListings().isEmpty()){
             volleyServiceLayer = new VolleyServiceLayer(rootView.getContext());
             volleyServiceLayer.volleyServiceLayerCallback = new Callback();
-            volleyServiceLayer.GetListings(mUrl);
+            volleyServiceLayer.GetListings();
         }
         else{
             setupAdapter();

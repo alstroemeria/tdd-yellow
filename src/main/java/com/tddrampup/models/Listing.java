@@ -12,15 +12,19 @@ public class Listing{
     @Expose
     private String name;
     @Expose
-    private Address address;
+    private String street;
     @Expose
-    private List<Phone> phones = new ArrayList<Phone>();
+    private String city;
     @Expose
-    private GeoCode geoCode;
+    private String prov;
     @Expose
-    private Products products;
+    private String pcode;
     @Expose
-    private String merchantUrl;
+    private String phone;
+    @Expose
+    private String geoCodeLongitude;
+    @Expose
+    private String geoCodeLatitude;
 
     public String getId() {
         return id;
@@ -38,44 +42,59 @@ public class Listing{
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public List<Phone> getPhones() {
-        return phones;
+    public String getCity() {
+        return city;
     }
 
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public GeoCode getGeoCode() {
-        return geoCode;
+    public String getProv() {
+        return prov;
     }
 
-    public void setGeoCode(GeoCode geoCode) {
-        this.geoCode = geoCode;
+    public void setProv(String prov) {
+        this.prov = prov;
     }
 
-    public Products getProducts() {
-        return products;
+    public String getPcode() {
+        return pcode;
     }
 
-    public void setProducts(Products products) {
-        this.products = products;
+    public void setPcode(String pcode) {
+        this.pcode = pcode;
     }
 
-    public String getMerchantUrl() {
-        return merchantUrl;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMerchantUrl(String merchantUrl) {
-        this.merchantUrl = merchantUrl;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
+    public String getGeoCodeLongitude() {
+        return geoCodeLongitude;
+    }
+
+    public void setGeoCodeLongitude(String geoCodeLongitude) {
+        this.geoCodeLongitude = geoCodeLongitude;
+    }
+
+    public String getGeoCodeLatitude() {
+        return geoCodeLatitude;
+    }
+
+    public void setGeoCodeLatitude(String geoCodeLatitude) {
+        this.geoCodeLatitude = geoCodeLatitude;
+    }
 }

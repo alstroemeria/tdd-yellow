@@ -62,7 +62,7 @@ public class DetailFragment extends Fragment {
 
     public void populateTextViews() {
         nameTextView.setText(mListing.getName());
-        locationTextView.setText(mListing.getAddress().getStreet() + ", " + mListing.getAddress().getCity() + ", " + mListing.getAddress().getProv() + ", " + mListing.getAddress().getPcode());
-        websiteTextView.setText(mListing.getMerchantUrl());
+        locationTextView.setText(mListing.getStreet() + ", " + mListing.getCity() + ", " + mListing.getProv() + ", " + mListing.getPcode());
+        //websiteTextView.setText(mListing.getMerchantUrl());
     }
 }
