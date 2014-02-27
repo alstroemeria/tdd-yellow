@@ -1,4 +1,4 @@
-package com.tddrampup.serviceLayers;
+package com.tddrampup.services;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,12 +22,12 @@ import java.util.ArrayList;
 /**
  * Created by WX009-PC on 2/20/14.
  */
-public class VolleyServiceLayer {
+public class VolleyService {
     private static final String mUrl = "http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=jkhlh&apikey=c56ta8h34znvqzkqaspjexar";
     private RequestQueue mRequestQueue;
-    public VolleyServiceLayerCallback volleyServiceLayerCallback;
+    public VolleyServiceCallback volleyServiceLayerCallback;
 
-    public VolleyServiceLayer(Context context){
+    public VolleyService(Context context){
         mRequestQueue =  Volley.newRequestQueue(context);
     }
 

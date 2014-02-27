@@ -12,8 +12,8 @@ import android.widget.ListView;
 import com.tddrampup.R;
 import com.tddrampup.adapters.ListingAdapter;
 import com.tddrampup.models.Listing;
-import com.tddrampup.serviceLayers.VolleyServiceLayer;
-import com.tddrampup.serviceLayers.VolleyServiceLayerCallback;
+import com.tddrampup.services.VolleyService;
+import com.tddrampup.services.VolleyServiceCallback;
 import com.tddrampup.singletons.Listings;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class ListFragment extends Fragment {
     private ListView mListView;
     private ListingAdapter mListingAdapter;
     private LayoutInflater mLayoutInflater;
-    private VolleyServiceLayer volleyServiceLayer;
+    private VolleyService volleyServiceLayer;
 
     public onListViewItemClickedListener mListener;
 
@@ -52,7 +52,7 @@ public class ListFragment extends Fragment {
         });
 
         if (Listings.getInstance().getListings().isEmpty()){
-            volleyServiceLayer = new VolleyServiceLayer(rootView.getContext());
+            volleyServiceLayer = new VolleyService(rootView.getContext());
             volleyServiceLayer.volleyServiceLayerCallback = new Callback();
             volleyServiceLayer.GetListings();
         }
@@ -81,7 +81,7 @@ public class ListFragment extends Fragment {
         mListener = null;
     }
 
-    class Callback implements VolleyServiceLayerCallback {
+    class Callback implements VolleyServiceCallback {
         public void listCallbackCall(List<Listing> listings) {
             Listings.getInstance().setListings(listings);
             setupAdapter();

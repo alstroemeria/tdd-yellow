@@ -4,17 +4,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,8 +19,8 @@ import com.tddrampup.fragments.DetailFragment;
 import com.tddrampup.fragments.GoogleMapFragment;
 import com.tddrampup.fragments.ListFragment;
 import com.tddrampup.models.Listing;
-import com.tddrampup.serviceLayers.VolleyServiceLayer;
-import com.tddrampup.serviceLayers.VolleyServiceLayerCallback;
+import com.tddrampup.services.VolleyService;
+import com.tddrampup.services.VolleyServiceCallback;
 import com.tddrampup.singletons.Listings;
 
 import java.util.ArrayList;
@@ -41,38 +36,14 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
     private CharSequence mTitle;
     private String[] mMenuTitles;
 
-    private VolleyServiceLayer volleyServiceLayer;
-    private ListFragment mListFragment;
-    private GoogleMapFragment mGoogleMapFragment;
-
-    public ListFragment getListFragment() {
-        if (mListFragment == null ){
-            mListFragment = new ListFragment();
-        }
-        return mListFragment;
-    }
-
-    public void setListFragment(ListFragment mListFragment) {
-        this.mListFragment = mListFragment;
-    }
-
-    public GoogleMapFragment getGoogleMapFragment() {
-        if (mGoogleMapFragment == null){
-            mGoogleMapFragment = new GoogleMapFragment(new ArrayList<Listing>());
-        }
-        return mGoogleMapFragment;
-    }
-
-    public void setGoogleMapFragment(GoogleMapFragment mGoogleMapFragment) {
-        this.mGoogleMapFragment = mGoogleMapFragment;
-    }
+    private VolleyService volleyServiceLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        volleyServiceLayer = new VolleyServiceLayer(getApplicationContext());
+        volleyServiceLayer = new VolleyService(getApplicationContext());
 
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_array);
@@ -116,8 +87,6 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
 
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
@@ -140,15 +109,19 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
     private void selectItem(int position) {
 
         String item = getResources().getStringArray(R.array.menu_array)[position];
-
-        Fragment fragment = getListFragment();
-        if (position == 0)
-            fragment = getListFragment();
-        if (position == 1)
-            fragment = getGoogleMapFragment();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, fragment).commit();
+        FragmentManager transaction = getSupportFragmentManager();
+        switch (position){
+            case 0:
+                transaction.beginTransaction()
+                        .replace(R.id.content_frame,new ListFragment(),"LIST_FRAGMENT")
+                        .commit();
+                break;
+            case 1:
+                transaction.beginTransaction()
+                        .replace(R.id.content_frame,new GoogleMapFragment(new ArrayList<Listing>()),"MAP_FRAGMENT")
+                        .commit();
+                break;
+        }
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -190,7 +163,7 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
         volleyServiceLayer.GetListing(listing.getId());
     }
 
-    class Callback implements VolleyServiceLayerCallback {
+    class Callback implements VolleyServiceCallback {
         public void listCallbackCall(List<Listing> listings) {
             // do nothing
         }

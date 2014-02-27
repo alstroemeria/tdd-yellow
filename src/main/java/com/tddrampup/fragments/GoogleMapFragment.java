@@ -68,9 +68,9 @@ public class GoogleMapFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        //Fragment fragment = getFragmentManager().findFragmentById(R.id.google_map);
-        //if (fragment != null)
-        //   getFragmentManager().beginTransaction().remove(fragment).commit();
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.google_map);
+        if (fragment != null)
+           getFragmentManager().beginTransaction().remove(fragment).commit();
     }
 
     public void addMarkers() {

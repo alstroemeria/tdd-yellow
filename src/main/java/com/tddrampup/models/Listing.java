@@ -2,13 +2,12 @@ package com.tddrampup.models;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Listing{
 
     @Expose
-    private String id;
+    private Long id;
+    @Expose
+    private String yellowId;
     @Expose
     private String name;
     @Expose
@@ -26,12 +25,20 @@ public class Listing{
     @Expose
     private String geoCodeLatitude;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getYellowId() {
+        return yellowId;
+    }
+
+    public void setYellowId(String yellowId) {
+        this.yellowId = yellowId;
     }
 
     public String getName() {
