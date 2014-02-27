@@ -18,6 +18,7 @@ import com.tddrampup.R;
 import com.tddrampup.fragments.DetailFragment;
 import com.tddrampup.fragments.GoogleMapFragment;
 import com.tddrampup.fragments.ListFragment;
+import com.tddrampup.fragments.ListingsFragment;
 import com.tddrampup.models.Listing;
 import com.tddrampup.services.VolleyService;
 import com.tddrampup.services.VolleyServiceCallback;
@@ -120,8 +121,9 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
 //                transaction.beginTransaction()
 //                        .replace(R.id.content_frame,new GoogleMapFragment(new ArrayList<Listing>()),"MAP_FRAGMENT")
 //                        .commit();
-                Intent detailIntent = new Intent(getApplicationContext(), TestActivity.class);
-                startActivity(detailIntent);
+                transaction.beginTransaction()
+                        .replace(R.id.content_frame,new ListingsFragment(),"LISTINGS_FRAGMENT")
+                        .commit();
                 break;
         }
 
@@ -182,7 +184,7 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
             //Listings.getInstance().getListings().add(listing);
 
             Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-            detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, listing.getId());
+            detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, listing.getId().toString());
             startActivity(detailIntent);
         }
     }

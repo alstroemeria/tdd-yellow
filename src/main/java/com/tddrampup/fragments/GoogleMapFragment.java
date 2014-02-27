@@ -75,8 +75,8 @@ public class GoogleMapFragment extends Fragment {
 
     public void addMarkers() {
         for(Listing tempListing : mListings) {
-            if (tempListing.getGeoCodeLatitude()!=null ) {
-                LatLng coordinates = new LatLng(Double.parseDouble(tempListing.getGeoCodeLatitude().toString()), Double.parseDouble(tempListing.getGeoCodeLongitude().toString()));
+            if (tempListing.getLatitude()!=null ) {
+                LatLng coordinates = new LatLng(Double.parseDouble(tempListing.getLatitude().toString()), Double.parseDouble(tempListing.getLongitude().toString()));
                 map.addMarker(new MarkerOptions().position(coordinates).title(tempListing.getName()));
             }
         }

@@ -37,7 +37,7 @@ public class Listings {
 
     public Listing getListing(String id){
         for (Listing item: mListings){
-            if (item.getId().equals(id)){
+            if (item.getId().toString().equals(id)){
                 return item;
             }
         }

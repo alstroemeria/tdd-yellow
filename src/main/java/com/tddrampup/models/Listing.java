@@ -21,9 +21,9 @@ public class Listing{
     @Expose
     private String phone;
     @Expose
-    private String geoCodeLongitude;
+    private String longitude;
     @Expose
-    private String geoCodeLatitude;
+    private String latitude;
 
     public Long getId() {
         return id;
@@ -89,19 +89,19 @@ public class Listing{
         this.phone = phone;
     }
 
-    public String getGeoCodeLongitude() {
-        return geoCodeLongitude;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setGeoCodeLongitude(String geoCodeLongitude) {
-        this.geoCodeLongitude = geoCodeLongitude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getGeoCodeLatitude() {
-        return geoCodeLatitude;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setGeoCodeLatitude(String geoCodeLatitude) {
-        this.geoCodeLatitude = geoCodeLatitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

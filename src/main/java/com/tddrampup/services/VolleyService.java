@@ -1,6 +1,9 @@
 package com.tddrampup.services;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -13,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.tddrampup.contentprovider.ListingTable;
 import com.tddrampup.models.Listing;
 
 import org.json.JSONObject;
@@ -41,14 +45,20 @@ public class VolleyService {
 
                 for(int i =0; i < listings.size(); i++){
                     JsonObject rawListing = listings.get(i).getAsJsonObject();
-                    myListings.add(parseListing(rawListing));
+                    Listing listing = parseListing(rawListing);
+                    if (listing != null){
+                        myListings.add(listing);
+
+                    }
                 }
+
+
                 volleyServiceLayerCallback.listCallbackCall(myListings);
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("LOGGING:", error.getMessage());
+                Log.d("LOGGING:", error.toString());
             }
         });
         mRequestQueue.add(jr);
@@ -70,25 +80,26 @@ public class VolleyService {
             }
         });
         mRequestQueue.add(jr);
+
     }
 
     private Listing parseListing(JsonObject rawListing) {
         Gson gson = new Gson();
-        Listing myListing = gson.fromJson(rawListing, Listing.class);
-        myListing.setStreet(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("street").getAsString());
-        myListing.setCity(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("city").getAsString());
-        myListing.setProv(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("prov").getAsString());
-        myListing.setPcode(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("pcode").getAsString());
-        try{
-            JsonObject geoCode = rawListing.getAsJsonObject().getAsJsonObject("geoCode");
-            myListing.setGeoCodeLatitude(geoCode.getAsJsonPrimitive("latitute").getAsString());
-            myListing.setGeoCodeLongitude(geoCode.getAsJsonPrimitive("longitude").getAsString());
+        try {
+            Listing myListing = gson.fromJson(rawListing, Listing.class);
+            myListing.setStreet(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("street").getAsString());
+            myListing.setCity(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("city").getAsString());
+            myListing.setProv(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("prov").getAsString());
+            myListing.setPcode(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("pcode").getAsString());
+            myListing.setLatitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("latitude").toString());
+            myListing.setLongitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("longitude").toString());
             myListing.setPhone("911");
+            return myListing;
         }
         catch(Exception e){
-
+            Log.d("Volley Service", e.toString());
+            return null;
         }
-        return myListing;
     }
 }
 
