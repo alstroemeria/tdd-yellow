@@ -65,7 +65,7 @@ public class MainActivityTest {
 
 //    @Test
 //    public void onListViewItemClicked_shouldOpenDetailFragment() throws Exception {
-//        ListFragment listFragment = new ListFragment();
+//        MainFragment listFragment = new MainFragment();
 //        ListView listView = (ListView) listFragment.getView().findViewById(R.id.list_view);
 //        ListingAdapter listingAdapter = new ListingAdapter(activity.getLayoutInflater(), listings);
 //        listView.setAdapter(listingAdapter);

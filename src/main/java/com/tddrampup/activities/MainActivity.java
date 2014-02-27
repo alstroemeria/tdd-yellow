@@ -16,18 +16,16 @@ import android.widget.ListView;
 
 import com.tddrampup.R;
 import com.tddrampup.fragments.DetailFragment;
-import com.tddrampup.fragments.GoogleMapFragment;
-import com.tddrampup.fragments.ListFragment;
+import com.tddrampup.fragments.MainFragment;
 import com.tddrampup.fragments.ListingsFragment;
 import com.tddrampup.models.Listing;
 import com.tddrampup.services.VolleyService;
 import com.tddrampup.services.VolleyServiceCallback;
 import com.tddrampup.singletons.Listings;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements ListFragment.onListViewItemClickedListener {
+public class MainActivity extends FragmentActivity implements MainFragment.onListViewItemClickedListener, ListingsFragment.onListViewItemClickedListener {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -99,6 +97,13 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onListViewItemClicked(long id) {
+        Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+        detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, id +"");
+        startActivity(detailIntent);
+    }
+
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -114,7 +119,7 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
         switch (position){
             case 0:
                 transaction.beginTransaction()
-                        .replace(R.id.content_frame,new ListFragment(),"LIST_FRAGMENT")
+                        .replace(R.id.content_frame,new MainFragment(),"LIST_FRAGMENT")
                         .commit();
                 break;
             case 1:

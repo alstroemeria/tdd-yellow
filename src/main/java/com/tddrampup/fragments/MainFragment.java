@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by WX009-PC on 2/19/14.
  */
-public class ListFragment extends Fragment {
+public class MainFragment extends Fragment {
 
     private static final String mUrl = "http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=jkhlh&apikey=4nd67ycv3yeqtg97dku7m845";
 
@@ -102,7 +102,7 @@ public class ListFragment extends Fragment {
                 values.put(ListingTable.COLUMN_LATITUDE,listing.getLatitude());
                 values.put(ListingTable.COLUMN_LONGITUDE,listing.getLongitude());
                 Uri listingUri = getActivity().getContentResolver().insert(ListingContentProvider.CONTENT_URI, values);
-                Log.d("ListFragment", listingUri.toString());
+                Log.d("MainFragment", listingUri.toString());
             }
             setupAdapter();
         }

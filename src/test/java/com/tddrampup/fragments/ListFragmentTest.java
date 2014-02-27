@@ -28,7 +28,7 @@ import static org.robolectric.Robolectric.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class ListFragmentTest {
     private FragmentActivity mActivity;
-    private ListFragment mListFragment;
+    private MainFragment mMainFragment;
     private  ArrayList<Listing> mListings;
 
     public void createFakeData() {
@@ -43,8 +43,8 @@ public class ListFragmentTest {
     private void addFragment(FragmentActivity activity) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mListFragment = new ListFragment();
-        fragmentTransaction.add(mListFragment, null);
+        mMainFragment = new MainFragment();
+        fragmentTransaction.add(mMainFragment, null);
         fragmentTransaction.commit();
     }
 
@@ -63,7 +63,7 @@ public class ListFragmentTest {
         MainActivity mainActivity = Robolectric.buildActivity(MainActivity.class).create().visible().get();
         addFragment(mainActivity);
 
-        ListView listView = (ListView) mListFragment.getView().findViewById(R.id.list_view);
+        ListView listView = (ListView) mMainFragment.getView().findViewById(R.id.list_view);
         ListingAdapter listingAdapter = new ListingAdapter(mainActivity.getLayoutInflater(), mListings);
         listView.setAdapter(listingAdapter);
 
