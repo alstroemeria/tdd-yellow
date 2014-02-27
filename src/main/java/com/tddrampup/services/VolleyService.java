@@ -54,7 +54,7 @@ public class VolleyService {
         mRequestQueue.add(jr);
     }
 
-    public void GetListing(String id) {
+    public void GetListing(Long id) {
         String url ="http://api.sandbox.yellowapi.com/GetBusinessDetails/?listingId="+ id +"&bus-name=Yellow-Pages-Group&city=Toronto&prov=Ontario&fmt=JSON&lang=en&UID=fgdfg&apikey=4nd67ycv3yeqtg97dku7m845";
         JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
             @Override

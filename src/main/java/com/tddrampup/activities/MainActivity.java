@@ -117,9 +117,11 @@ public class MainActivity extends FragmentActivity implements ListFragment.onLis
                         .commit();
                 break;
             case 1:
-                transaction.beginTransaction()
-                        .replace(R.id.content_frame,new GoogleMapFragment(new ArrayList<Listing>()),"MAP_FRAGMENT")
-                        .commit();
+//                transaction.beginTransaction()
+//                        .replace(R.id.content_frame,new GoogleMapFragment(new ArrayList<Listing>()),"MAP_FRAGMENT")
+//                        .commit();
+                Intent detailIntent = new Intent(getApplicationContext(), TestActivity.class);
+                startActivity(detailIntent);
                 break;
         }
 
