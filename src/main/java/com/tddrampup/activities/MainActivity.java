@@ -60,6 +60,7 @@ public class MainActivity extends FragmentActivity implements ListingsFragment.o
         getActionBar().setDisplayShowHomeEnabled(false);
         setupDrawer();
 
+
         if (savedInstanceState == null) {
             selectItem(0);
         }
@@ -189,6 +190,7 @@ public class MainActivity extends FragmentActivity implements ListingsFragment.o
 
     class Callback implements VolleyCallback {
         public void listCallbackCall(List<Listing> listings) {
+            getContentResolver().delete(ListingContentProvider.CONTENT_URI,null,null);
             for (Listing listing:listings){
                 insertListing(listing);
             }

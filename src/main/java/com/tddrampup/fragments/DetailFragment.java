@@ -90,7 +90,7 @@ public class DetailFragment extends Fragment {
             LatLng currentCoordinates = new LatLng(
                     Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_LATITUDE))),
                     Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_LONGITUDE))));
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 15));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 17));
             map.addMarker(new MarkerOptions().position(currentCoordinates));
             cursor.close();
         }
