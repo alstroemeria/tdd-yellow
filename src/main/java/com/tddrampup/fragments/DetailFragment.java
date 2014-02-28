@@ -75,18 +75,22 @@ public class DetailFragment extends Fragment {
     private void fillData() {
         String[] projection = { ListingTable.COLUMN_NAME, ListingTable.COLUMN_LONGITUDE,
                 ListingTable.COLUMN_LATITUDE, ListingTable.COLUMN_STREET,
-                ListingTable.COLUMN_URL,ListingTable.COLUMN_PHONE};
+                ListingTable.COLUMN_URL,ListingTable.COLUMN_PHONE,
+                ListingTable.COLUMN_PROV, ListingTable.COLUMN_CITY};
         Cursor cursor = getActivity().getContentResolver().query(mlistingUri, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
             nameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_NAME)));
-            locationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_STREET)));
+            locationTextView.setText(String.format("%s, %s ,%s",cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_STREET)),
+                                                                cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_CITY)),
+                                                                cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_PROV))
+                                    ));
             websiteTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_URL)));
             phoneTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_PHONE)));
             LatLng currentCoordinates = new LatLng(
                     Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_LATITUDE))),
                     Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_LONGITUDE))));
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 12));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 15));
             map.addMarker(new MarkerOptions().position(currentCoordinates));
             cursor.close();
         }

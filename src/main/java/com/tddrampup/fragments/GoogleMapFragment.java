@@ -58,7 +58,7 @@ public class GoogleMapFragment extends Fragment implements LoaderManager.LoaderC
                 LatLng currentCoordinates = new LatLng(
                         currentLocation.getLatitude(),
                         currentLocation.getLongitude());
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 10));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 14));
             }
 
         } catch (InflateException e) {

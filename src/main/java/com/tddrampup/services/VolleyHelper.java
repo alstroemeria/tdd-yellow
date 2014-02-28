@@ -1,6 +1,7 @@
 package com.tddrampup.services;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  * Created by WX009-PC on 2/20/14.
  */
 public class VolleyHelper {
-    private static final String mUrl = "http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=jkhlh&apikey=c56ta8h34znvqzkqaspjexar";
+
     private RequestQueue mRequestQueue;
     public VolleyCallback volleyServiceLayerCallback;
 
@@ -31,8 +32,12 @@ public class VolleyHelper {
         mRequestQueue =  Volley.newRequestQueue(context);
     }
 
-    public void GetListings() {
-        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET,mUrl,null, new Response.Listener<JSONObject>() {
+    public void GetListings(String search, Location location) {
+        Log.d("location", location.getLatitude()+ " " + location.getLongitude());
+
+
+        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET,"http://api.sandbox.yellowapi.com/FindBusiness/?what=" +search +
+                "&where=cZ%3C"+ location.getLongitude() +"%3E%2C%3C"+ location.getLatitude() +"%3E&&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=fakeUID&apikey=c56ta8h34znvqzkqaspjexar" ,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 JsonParser parser = new JsonParser();
@@ -55,6 +60,7 @@ public class VolleyHelper {
             }
         });
         mRequestQueue.add(jr);
+
     }
 
     public void GetListing(Long id) {

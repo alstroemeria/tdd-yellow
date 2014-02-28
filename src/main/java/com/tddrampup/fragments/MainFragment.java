@@ -59,7 +59,7 @@ public class MainFragment extends Fragment {
         if (Listings.getInstance().getListings().isEmpty()){
             volleyServiceLayer = new VolleyHelper(rootView.getContext());
             volleyServiceLayer.volleyServiceLayerCallback = new Callback();
-            volleyServiceLayer.GetListings();
+            //volleyServiceLayer.GetListings();
         }
         else{
             setupAdapter();
