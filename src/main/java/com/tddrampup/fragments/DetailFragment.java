@@ -56,12 +56,13 @@ public class DetailFragment extends Fragment {
 
     private void fillData() {
         String[] projection = { ListingTable.COLUMN_NAME,
-                ListingTable.COLUMN_STREET};
+                ListingTable.COLUMN_STREET,ListingTable.COLUMN_URL};
         Cursor cursor = getActivity().getContentResolver().query(mlistingUri, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
             nameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_NAME)));
             locationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_STREET)));
+            websiteTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ListingTable.COLUMN_URL)));
             //TODO: add more data above
             cursor.close();
         }

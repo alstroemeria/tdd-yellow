@@ -68,13 +68,21 @@ public class GoogleMapFragment extends Fragment implements LoaderManager.LoaderC
         return rootView;
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         Fragment fragment = getFragmentManager().findFragmentById(R.id.google_map);
-        if (fragment != null)
+
+        if(!getActivity().isFinishing()&& fragment!=null) {
             getFragmentManager().beginTransaction().remove(fragment).commit();
+        }
     }
 
     @Override

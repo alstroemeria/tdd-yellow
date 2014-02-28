@@ -183,17 +183,20 @@ public class MainActivity extends FragmentActivity implements ListingsFragment.o
     }
 
     private void insertListing(Listing listing) {
-        ContentValues values = new ContentValues();
-        values.put(ListingTable.COLUMN_ID,listing.getId());
-        values.put(ListingTable.COLUMN_CITY,listing.getCity());
-        values.put(ListingTable.COLUMN_STREET,listing.getStreet());
-        values.put(ListingTable.COLUMN_PCODE,listing.getPcode());
-        values.put(ListingTable.COLUMN_PROV,listing.getProv());
-        values.put(ListingTable.COLUMN_NAME,listing.getName());
-        values.put(ListingTable.COLUMN_PHONE,listing.getPhone());
-        values.put(ListingTable.COLUMN_LATITUDE,listing.getLatitude());
-        values.put(ListingTable.COLUMN_LONGITUDE,listing.getLongitude());
-        Log.d("SQLITE", getContentResolver().insert(ListingContentProvider.CONTENT_URI, values).toString());
-
+        if (listing!=null){
+            ContentValues values = new ContentValues();
+            values.put(ListingTable.COLUMN_ID,listing.getId());
+            values.put(ListingTable.COLUMN_CITY,listing.getCity());
+            values.put(ListingTable.COLUMN_STREET,listing.getStreet());
+            values.put(ListingTable.COLUMN_PCODE,listing.getPcode());
+            values.put(ListingTable.COLUMN_PROV,listing.getProv());
+            values.put(ListingTable.COLUMN_NAME,listing.getName());
+            values.put(ListingTable.COLUMN_PHONE,listing.getPhone());
+            values.put(ListingTable.COLUMN_LATITUDE,listing.getLatitude());
+            values.put(ListingTable.COLUMN_LONGITUDE,listing.getLongitude());
+            values.put(ListingTable.COLUMN_PHONE,listing.getPhone());
+            values.put(ListingTable.COLUMN_URL,listing.getUrl());
+            Log.d("SQLITE", getContentResolver().insert(ListingContentProvider.CONTENT_URI, values).toString());
+        }
     }
 }

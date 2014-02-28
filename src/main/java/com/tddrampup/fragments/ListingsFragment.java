@@ -87,9 +87,9 @@ public class ListingsFragment extends ListFragment implements LoaderManager.Load
     private void setupAdapter(){
         // Fields from the database (projection)
         // Must include the _id column for the adapter to work
-        String[] from = new String[] { ListingTable.COLUMN_NAME, ListingTable.COLUMN_STREET };
+        String[] from = new String[] { ListingTable.COLUMN_NAME, ListingTable.COLUMN_STREET};
         // Fields on the UI to which we map
-        int[] to = new int[] { R.id.listing_title, R.id.listing_address };
+        int[] to = new int[] { R.id.listing_title, R.id.listing_address};
         adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.row_listview, null, from,to, 0);
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
         setListAdapter(adapter);

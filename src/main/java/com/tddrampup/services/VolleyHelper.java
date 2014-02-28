@@ -86,7 +86,6 @@ public class VolleyHelper {
             myListing.setPcode(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("pcode").getAsString());
             myListing.setLatitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("latitude").getAsString());
             myListing.setLongitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("longitude").getAsString());
-            myListing.setPhone("911");
             return myListing;
         }
         catch(Exception e){
@@ -96,14 +95,21 @@ public class VolleyHelper {
     }
 
     private Listing parseDetailedListing(JsonObject rawListing) {
+        Listing myListing = parseListing(rawListing);
         try {
-            Listing myListing = parseListing(rawListing);
-            return myListing;
+            myListing.setPhone(rawListing.getAsJsonObject().getAsJsonArray("phones").get(0).getAsJsonObject().getAsJsonPrimitive("dispNum").getAsString());
+
+            JsonArray webUrl = rawListing.getAsJsonObject().getAsJsonObject("products").getAsJsonArray("webUrl");
+
+            if (webUrl.size()>0){
+                myListing.setUrl(webUrl.get(0).getAsString());
+            }
         }
         catch(Exception e){
             Log.d("Volley Service", e.toString());
-            return null;
         }
+        return myListing;
+
     }
 }
 

@@ -25,6 +25,19 @@ public class Listing{
     @Expose
     private String latitude;
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Expose
+    private String url;
+    @Expose
+    private String hours;
+
     public Long getId() {
         return id;
     }
