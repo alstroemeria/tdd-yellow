@@ -50,7 +50,6 @@ public class GoogleMapFragment extends Fragment implements LoaderManager.LoaderC
         try {
             rootView = inflater.inflate(R.layout.google_map_fragment, container, false);
             map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.google_map)).getMap();
-            map.setMyLocationEnabled(true);
             getActivity().getSupportLoaderManager().initLoader(0, null, this);
 
             map.setMyLocationEnabled(true);

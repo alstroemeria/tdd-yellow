@@ -1,6 +1,8 @@
 package com.tddrampup.activities;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -11,11 +13,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.tddrampup.R;
 import com.tddrampup.contentprovider.ListingContentProvider;
@@ -49,6 +54,7 @@ public class MainActivity extends FragmentActivity implements ListingsFragment.o
         volleyServiceLayer.volleyServiceLayerCallback = new Callback();
         volleyServiceLayer.GetListings();
 
+        getActionBar().setDisplayShowHomeEnabled(false);
         setupDrawer();
 
         if (savedInstanceState == null) {
@@ -56,6 +62,20 @@ public class MainActivity extends FragmentActivity implements ListingsFragment.o
         }
 
     }
+
+    @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+    searchManager.getSearchableInfo(getComponentName()));
+    return true;
+}
 
     private void setupDrawer() {
         mTitle = mDrawerTitle = getTitle();

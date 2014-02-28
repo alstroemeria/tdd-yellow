@@ -53,15 +53,15 @@ public class MainActivityTest {
 //        Fragment listFragment = activity.getFragmentManager().findFragmentByTag("MY_LIST_FRAGMENT");
 //        assertThat(listFragment).isVisible();
 //    }
-
-    @Ignore
-    @Test
-    public void onMapButtonClicked_shouldOpenMapFragment() throws Exception {
-        Button mapButton = (Button) activity.findViewById(R.id.map_button);
-        mapButton.performClick();
-        Fragment mapFragment = activity.getSupportFragmentManager().findFragmentByTag("MY_MAP_FRAGMENT");
-        assertThat(mapFragment).isVisible();
-    }
+//
+//    @Ignore
+//    @Test
+//Test    public void onMapButtonClicked_shouldOpenMapFragment() throws Exception {
+//        Button mapButton = (Button) activity.findViewById(R.id.map_button);
+//        mapButton.performClick();
+//        Fragment mapFragment = activity.getSupportFragmentManager().findFragmentByTag("MY_MAP_FRAGMENT");
+//        assertThat(mapFragment).isVisible();
+//    }
 
 //    @Test
 //    public void onListViewItemClicked_shouldOpenDetailFragment() throws Exception {

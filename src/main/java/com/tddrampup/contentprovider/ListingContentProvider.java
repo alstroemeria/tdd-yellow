@@ -177,7 +177,8 @@ public class ListingContentProvider extends ContentProvider {
                 ListingTable.COLUMN_NAME, ListingTable.COLUMN_PCODE,
                 ListingTable.COLUMN_PROV, ListingTable.COLUMN_STREET,
                 ListingTable.COLUMN_LATITUDE, ListingTable.COLUMN_LONGITUDE,
-                ListingTable.COLUMN_ID,ListingTable.COLUMN_URL };
+                ListingTable.COLUMN_ID,ListingTable.COLUMN_URL,
+                ListingTable.COLUMN_PHONE };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
             HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));
