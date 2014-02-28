@@ -1,6 +1,10 @@
 package com.tddrampup.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -11,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,6 +52,15 @@ public class GoogleMapFragment extends Fragment implements LoaderManager.LoaderC
             map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.google_map)).getMap();
             map.setMyLocationEnabled(true);
             getActivity().getSupportLoaderManager().initLoader(0, null, this);
+
+            map.setMyLocationEnabled(true);
+            Location currentLocation = getMyLocation();
+            if(currentLocation!=null){
+                LatLng currentCoordinates = new LatLng(
+                        currentLocation.getLatitude(),
+                        currentLocation.getLongitude());
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 10));
+            }
 
         } catch (InflateException e) {
 
@@ -90,5 +104,23 @@ public class GoogleMapFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    private Location getMyLocation() {
+        // Get location from GPS if it's available
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Location wasn't found, check the next most accurate place for the current location
+        if (myLocation == null) {
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            // Finds a provider that matches the criteria
+            String provider = lm.getBestProvider(criteria, true);
+            // Use the provider to get the last known location
+            myLocation = lm.getLastKnownLocation(provider);
+        }
+
+        return myLocation;
     }
 }
