@@ -7,35 +7,22 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.tddrampup.R;
-import com.tddrampup.adapters.ListingAdapter;
 import com.tddrampup.contentprovider.ListingContentProvider;
 import com.tddrampup.contentprovider.ListingTable;
-import com.tddrampup.services.VolleyService;
-import com.tddrampup.singletons.Listings;
 
 /**
  * Created by dx165-xl on 2014-02-27.
  */
 public class ListingsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final String mUrl = "http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=jkhlh&apikey=4nd67ycv3yeqtg97dku7m845";
-
-    private ListView mListView;
-    private ListingAdapter mListingAdapter;
-    private LayoutInflater mLayoutInflater;
-    private VolleyService volleyServiceLayer;
     private SimpleCursorAdapter adapter;
     public  onListViewItemClickedListener mListener;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +34,6 @@ public class ListingsFragment extends ListFragment implements LoaderManager.Load
         setupAdapter();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -88,7 +74,8 @@ public class ListingsFragment extends ListFragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+        if (adapter!=null)
+            adapter.swapCursor(data);
     }
 
     @Override
@@ -97,22 +84,14 @@ public class ListingsFragment extends ListFragment implements LoaderManager.Load
         adapter.swapCursor(null);
     }
 
-
     private void setupAdapter(){
-//        mListingAdapter = new ListingAdapter(mLayoutInflater, Listings.getInstance().getListings());
-//        mListView.setAdapter(mListingAdapter);
-//        mListingAdapter.notifyDataSetChanged();
-
         // Fields from the database (projection)
         // Must include the _id column for the adapter to work
         String[] from = new String[] { ListingTable.COLUMN_NAME, ListingTable.COLUMN_STREET };
         // Fields on the UI to which we map
         int[] to = new int[] { R.id.listing_title, R.id.listing_address };
-
+        adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.row_listview, null, from,to, 0);
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
-        adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.row_listview, null, from,
-                to, 0);
-
         setListAdapter(adapter);
     }
 }

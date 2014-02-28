@@ -17,8 +17,8 @@ import com.tddrampup.adapters.ListingAdapter;
 import com.tddrampup.contentprovider.ListingContentProvider;
 import com.tddrampup.contentprovider.ListingTable;
 import com.tddrampup.models.Listing;
-import com.tddrampup.services.VolleyService;
-import com.tddrampup.services.VolleyServiceCallback;
+import com.tddrampup.services.VolleyCallback;
+import com.tddrampup.services.VolleyHelper;
 import com.tddrampup.singletons.Listings;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class MainFragment extends Fragment {
     private ListView mListView;
     private ListingAdapter mListingAdapter;
     private LayoutInflater mLayoutInflater;
-    private VolleyService volleyServiceLayer;
+    private VolleyHelper volleyServiceLayer;
 
     public onListViewItemClickedListener mListener;
 
@@ -57,7 +57,7 @@ public class MainFragment extends Fragment {
         });
 
         if (Listings.getInstance().getListings().isEmpty()){
-            volleyServiceLayer = new VolleyService(rootView.getContext());
+            volleyServiceLayer = new VolleyHelper(rootView.getContext());
             volleyServiceLayer.volleyServiceLayerCallback = new Callback();
             volleyServiceLayer.GetListings();
         }
@@ -86,7 +86,9 @@ public class MainFragment extends Fragment {
         mListener = null;
     }
 
-    class Callback implements VolleyServiceCallback {
+
+
+    class Callback implements VolleyCallback {
         public void listCallbackCall(List<Listing> listings) {
             Listings.getInstance().setListings(listings);
 

@@ -6,16 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.tddrampup.models.Listing;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-
-import java.util.List;
 
 /**
  * Created by WX009-PC on 2/21/14.
@@ -29,7 +25,7 @@ public class GoogleMapFragmentTest {
     private void addFragment() {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        googleMapFragment = new GoogleMapFragment(null);
+        googleMapFragment = new GoogleMapFragment();
         fragmentTransaction.add(googleMapFragment, null);
         fragmentTransaction.commit();
     }

@@ -1,13 +1,16 @@
 package com.tddrampup.activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,17 +18,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.tddrampup.R;
-import com.tddrampup.fragments.DetailFragment;
-import com.tddrampup.fragments.MainFragment;
+import com.tddrampup.contentprovider.ListingContentProvider;
+import com.tddrampup.contentprovider.ListingTable;
+import com.tddrampup.fragments.GoogleMapFragment;
 import com.tddrampup.fragments.ListingsFragment;
 import com.tddrampup.models.Listing;
-import com.tddrampup.services.VolleyService;
-import com.tddrampup.services.VolleyServiceCallback;
-import com.tddrampup.singletons.Listings;
+import com.tddrampup.services.VolleyCallback;
+import com.tddrampup.services.VolleyHelper;
 
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements MainFragment.onListViewItemClickedListener, ListingsFragment.onListViewItemClickedListener {
+public class MainActivity extends FragmentActivity implements ListingsFragment.onListViewItemClickedListener {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -35,15 +38,26 @@ public class MainActivity extends FragmentActivity implements MainFragment.onLis
     private CharSequence mTitle;
     private String[] mMenuTitles;
 
-    private VolleyService volleyServiceLayer;
+    private VolleyHelper volleyServiceLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        volleyServiceLayer = new VolleyService(getApplicationContext());
+        volleyServiceLayer = new VolleyHelper(getApplicationContext());
+        volleyServiceLayer.volleyServiceLayerCallback = new Callback();
+        volleyServiceLayer.GetListings();
 
+        setupDrawer();
+
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+
+    }
+
+    private void setupDrawer() {
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,11 +93,6 @@ public class MainActivity extends FragmentActivity implements MainFragment.onLis
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        if (savedInstanceState == null) {
-            selectItem(0);
-        }
-
     }
 
     @Override
@@ -98,10 +107,29 @@ public class MainActivity extends FragmentActivity implements MainFragment.onLis
     }
 
     @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onListViewItemClicked(long id) {
-        Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-        detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, id +"");
-        startActivity(detailIntent);
+        volleyServiceLayer.GetListing(id);
     }
 
     /* The click listner for ListView in the navigation drawer */
@@ -119,16 +147,14 @@ public class MainActivity extends FragmentActivity implements MainFragment.onLis
         switch (position){
             case 0:
                 transaction.beginTransaction()
-                        .replace(R.id.content_frame,new MainFragment(),"LIST_FRAGMENT")
+                        .replace(R.id.content_frame,new ListingsFragment(),"LISTINGS_FRAGMENT")
                         .commit();
                 break;
             case 1:
-//                transaction.beginTransaction()
-//                        .replace(R.id.content_frame,new GoogleMapFragment(new ArrayList<Listing>()),"MAP_FRAGMENT")
-//                        .commit();
                 transaction.beginTransaction()
-                        .replace(R.id.content_frame,new ListingsFragment(),"LISTINGS_FRAGMENT")
+                        .replace(R.id.content_frame, new GoogleMapFragment(), "MAP_FRAGMENT")
                         .commit();
+
                 break;
         }
 
@@ -138,59 +164,36 @@ public class MainActivity extends FragmentActivity implements MainFragment.onLis
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-
-
-    @Override
-    public void onListViewItemClicked(int position) {
-        Listing listing = Listings.getInstance().getListings().get(position);
-        volleyServiceLayer.volleyServiceLayerCallback = new Callback();
-        volleyServiceLayer.GetListing(listing.getId());
-    }
-
-    class Callback implements VolleyServiceCallback {
+    class Callback implements VolleyCallback {
         public void listCallbackCall(List<Listing> listings) {
-            // do nothing
+            for (Listing listing:listings){
+                insertListing(listing);
+            }
         }
 
         @Override
         public void itemCallbackCall(Listing listing) {
-//            DetailFragment detailFragment = new DetailFragment();
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.main_activity, detailFragment, "MY_DETAIL_FRAGMENT");
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-
-            // using singleton for now.
-            //Listings.getInstance().getListings().add(listing);
+            insertListing(listing);
 
             Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-            detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, listing.getId().toString());
+            Uri todoUri = Uri.parse(ListingContentProvider.CONTENT_URI + "/" + listing.getId());
+            detailIntent.putExtra(ListingContentProvider.CONTENT_ITEM_TYPE, todoUri);
             startActivity(detailIntent);
         }
+    }
+
+    private void insertListing(Listing listing) {
+        ContentValues values = new ContentValues();
+        values.put(ListingTable.COLUMN_ID,listing.getId());
+        values.put(ListingTable.COLUMN_CITY,listing.getCity());
+        values.put(ListingTable.COLUMN_STREET,listing.getStreet());
+        values.put(ListingTable.COLUMN_PCODE,listing.getPcode());
+        values.put(ListingTable.COLUMN_PROV,listing.getProv());
+        values.put(ListingTable.COLUMN_NAME,listing.getName());
+        values.put(ListingTable.COLUMN_PHONE,listing.getPhone());
+        values.put(ListingTable.COLUMN_LATITUDE,listing.getLatitude());
+        values.put(ListingTable.COLUMN_LONGITUDE,listing.getLongitude());
+        Log.d("SQLITE", getContentResolver().insert(ListingContentProvider.CONTENT_URI, values).toString());
+
     }
 }

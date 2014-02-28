@@ -1,9 +1,6 @@
 package com.tddrampup.services;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -16,7 +13,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tddrampup.contentprovider.ListingTable;
 import com.tddrampup.models.Listing;
 
 import org.json.JSONObject;
@@ -26,12 +22,12 @@ import java.util.ArrayList;
 /**
  * Created by WX009-PC on 2/20/14.
  */
-public class VolleyService {
+public class VolleyHelper {
     private static final String mUrl = "http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=40&pg=1&dist=1&fmt=JSON&lang=en&UID=jkhlh&apikey=c56ta8h34znvqzkqaspjexar";
     private RequestQueue mRequestQueue;
-    public VolleyServiceCallback volleyServiceLayerCallback;
+    public VolleyCallback volleyServiceLayerCallback;
 
-    public VolleyService(Context context){
+    public VolleyHelper(Context context){
         mRequestQueue =  Volley.newRequestQueue(context);
     }
 
@@ -48,11 +44,8 @@ public class VolleyService {
                     Listing listing = parseListing(rawListing);
                     if (listing != null){
                         myListings.add(listing);
-
                     }
                 }
-
-
                 volleyServiceLayerCallback.listCallbackCall(myListings);
             }
         },new Response.ErrorListener() {
@@ -71,7 +64,7 @@ public class VolleyService {
             public void onResponse(JSONObject response) {
                 JsonParser parser = new JsonParser();
                 JsonObject listing = parser.parse(response.toString()).getAsJsonObject();
-                volleyServiceLayerCallback.itemCallbackCall(parseListing(listing));
+                volleyServiceLayerCallback.itemCallbackCall(parseDetailedListing(listing));
             }
         },new Response.ErrorListener() {
             @Override
@@ -91,9 +84,20 @@ public class VolleyService {
             myListing.setCity(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("city").getAsString());
             myListing.setProv(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("prov").getAsString());
             myListing.setPcode(rawListing.getAsJsonObject().getAsJsonObject("address").getAsJsonPrimitive("pcode").getAsString());
-            myListing.setLatitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("latitude").toString());
-            myListing.setLongitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("longitude").toString());
+            myListing.setLatitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("latitude").getAsString());
+            myListing.setLongitude(rawListing.getAsJsonObject().getAsJsonObject("geoCode").getAsJsonPrimitive("longitude").getAsString());
             myListing.setPhone("911");
+            return myListing;
+        }
+        catch(Exception e){
+            Log.d("Volley Service", e.toString());
+            return null;
+        }
+    }
+
+    private Listing parseDetailedListing(JsonObject rawListing) {
+        try {
+            Listing myListing = parseListing(rawListing);
             return myListing;
         }
         catch(Exception e){

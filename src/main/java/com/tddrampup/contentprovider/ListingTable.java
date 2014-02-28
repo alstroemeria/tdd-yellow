@@ -16,6 +16,9 @@ public class ListingTable {
     public static final String COLUMN_PHONE = "phone";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_LATITUDE = "latitude";
+    public static final String COLUMN_URL = "url";
+    public static final String COLUMN_HOURS = "hours";
+
 
     // Database creation SQL statement
     private static final String DATABASE_CREATE = "create table "
@@ -27,9 +30,11 @@ public class ListingTable {
             + COLUMN_CITY + " text not null, "
             + COLUMN_PROV + " text not null, "
             + COLUMN_PCODE + " text not null, "
-            + COLUMN_PHONE + " text,"
             + COLUMN_LONGITUDE + " text not null, "
-            + COLUMN_LATITUDE + " text not null "
+            + COLUMN_LATITUDE + " text not null, "
+            + COLUMN_PHONE + " text,"
+            + COLUMN_URL + " text,"
+            + COLUMN_HOURS + " text"
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
